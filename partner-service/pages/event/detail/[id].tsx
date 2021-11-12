@@ -14,6 +14,7 @@ const EventDetail = () => {
   );
 
   const dispatch = useDispatch<AppDispatch>();
+
   return (
     <Layout>
       <section>
@@ -31,7 +32,7 @@ const EventDetail = () => {
               <th>이벤트이미지</th>
               <td>
                 <img
-                  src={eventItem?.eventPhotoUrl}
+                  src={eventItem?.photoUrl}
                   alt={eventItem?.title}
                   width={"20%"}
                 />

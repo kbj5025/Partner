@@ -1,22 +1,27 @@
 import { configureStore } from "@reduxjs/toolkit";
 import eventReducer from "./modules/event";
-import profileReducer from "./modules/profile";
-import progressReducer from "./modules/progress";
-import alertReducer from "./modules/alert";
 import applyReducer from "./modules/apply";
+// 최상위 사가
+import rootSaga from "../middleware";
+import createSagaMiddleware from "@redux-saga/core";
+
+// saga middleware 생성
+const sagaMiddleware = createSagaMiddleware();
 
 // global state(전역 상태) 저장소 만듦
 export const store = configureStore({
   reducer: {
-    // profile state 처리하는 reducer를 등록
-    profile: profileReducer,
+    // 각 state별로 처리할 reducer 목록
     event: eventReducer,
     apply: applyReducer,
-    progress: progressReducer,
-    alert: alertReducer,
-  }, // 각 state별로 처리할 reducer 목록
+  },
   devTools: true, // 개발툴 사용여부
+  middleware: [sagaMiddleware], // redux store(dispatcher)에 미들웨어 적용
 });
+
+// saga middleware를 실행
+// rootSaga와 하위에 정의한 감지(take)할 Saga Action들에 대해서 감지 시작
+sagaMiddleware.run(rootSaga);
 
 // root state 타입 정의
 // 가장 최상위 state

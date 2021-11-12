@@ -8,33 +8,19 @@ export interface EventItem {
   id: number;
   title: string;
   description?: string;
-  eventPhotoUrl: string;
+  photoUrl: string;
   clinic: string;
   price: string;
   keyword: string;
 }
 
-export interface EventPage {
-  data: EventItem[];
-  totalElements: number;
-  totalPages: number;
-  page: number;
-  pageSize: number;
-  isLast: boolean;
-}
-
 // 백엔드 연동 고려해서 state 구조를 설계
-interface EventState {
+export interface EventState {
   data: EventItem[]; // 포토 아이템 배열
   isFetched: boolean; // 서버에서 데이터를 받아왔는지에 대한 여부
   isAddCompleted?: boolean; // 데이터 추가가 완료되었는지 여부
   isRemoveCompleted?: boolean; // 데이터 삭제가 완료되었는지 여부
   isModifyCompleted?: boolean; // 데이터 수정이 완료되었는지 여부
-  totalElements?: number;
-  totalPages: number;
-  page: number;
-  pageSize: number;
-  isLast?: boolean;
 }
 
 const initialState: EventState = {
@@ -44,16 +30,13 @@ const initialState: EventState = {
       title: "아이웰 눈꺼풀 필러",
       description:
         "꺼진 눈두덩이를 채우면 더 어리고 밝아보이는 인상으로 개선 가능!",
-      eventPhotoUrl: "https://via.placeholder.com/150/54176f",
+      photoUrl: "https://via.placeholder.com/150/54176f",
       clinic: "아이웰",
       price: "97만원",
       keyword: "눈",
     },
   ],
   isFetched: false,
-  page: 0,
-  pageSize: 8,
-  totalPages: 0,
 };
 
 // slice 생성
@@ -67,13 +50,6 @@ const eventSlice = createSlice({
       const event = action.payload;
       state.data.unshift(event);
       state.isAddCompleted = true; // 추가가 되었음으로 표시
-    },
-    // payload 없는 reducer
-    // completed 관련된 속성을 삭제함(undefined 상태)
-    initialCompleted: (state) => {
-      delete state.isAddCompleted;
-      delete state.isRemoveCompleted;
-      delete state.isModifyCompleted;
     },
 
     removeEvent: (state, action: PayloadAction<number>) => {
@@ -94,14 +70,9 @@ const eventSlice = createSlice({
       if (eventItem) {
         eventItem.title = modifyItem.title;
         eventItem.description = modifyItem.description;
-        eventItem.eventPhotoUrl = modifyItem.eventPhotoUrl;
+        eventItem.photoUrl = modifyItem.photoUrl;
       }
       state.isModifyCompleted = true; // 변경되었음을 표시
-    },
-    initialEventItem: (state, action: PayloadAction<EventItem>) => {
-      const event = action.payload;
-      // 백엔드에서 받아온 데이터
-      state.data = [{ ...event }];
     },
     // payload값으로 state를 초기화하는 reducer 필요함
     initialEvent: (state, action: PayloadAction<EventItem[]>) => {
@@ -111,50 +82,11 @@ const eventSlice = createSlice({
       // 데이터를 받아옴으로 값을 남김
       state.isFetched = true;
     },
-    addTotalpages: (state) => {
-      state.totalPages++;
-    },
-    // payload값으로 state를 초기화하는 reducer 필요함
-    initialPagedEvent: (state, action: PayloadAction<EventPage>) => {
-      // 백엔드에서 받아온 데이터
-      // 컨텐트
-      state.data = action.payload.data;
-      // 페이징 데이터
-      state.totalElements = action.payload.totalElements;
-      state.totalPages = action.payload.totalPages;
-      state.page = action.payload.page;
-      state.pageSize = action.payload.pageSize;
-      state.isLast = action.payload.isLast;
-      // 데이터를 받아옴으로 값을 남김
-      state.isFetched = true;
-    },
-    initialNextEvent: (state, action: PayloadAction<EventPage>) => {
-      // 백엔드에서 받아온 데이터를 기존데이터 뒤로 합침
-      // 컨텐트
-      state.data = state.data.concat(action.payload.data);
-      // 페이징 데이터
-      state.totalElements = action.payload.totalElements;
-      state.totalPages = action.payload.totalPages;
-      state.page = action.payload.page;
-      state.pageSize = action.payload.pageSize;
-      state.isLast = action.payload.isLast;
-      // 데이터를 받아옴으로 값을 남김
-      state.isFetched = true;
-    },
   },
 });
 
 // action creator 내보내기: action creator는 action객체를 반환하는 함수
-export const {
-  addEvent,
-  removeEvent,
-  modifyEvent,
-  initialEventItem,
-  initialEvent,
-  initialCompleted,
-  addTotalpages,
-  initialPagedEvent,
-  initialNextEvent,
-} = eventSlice.actions;
+export const { addEvent, removeEvent, modifyEvent, initialEvent } =
+  eventSlice.actions;
 
 export default eventSlice.reducer;

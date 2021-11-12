@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import Layout from "../../../components/layout";
-import { Card } from "react-bootstrap";
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../provider";
@@ -17,7 +16,7 @@ const EventEdit = () => {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const [url, setUrl] = useState<string | undefined>(eventItem?.eventPhotoUrl);
+  const [url, setUrl] = useState<string | undefined>(eventItem?.photoUrl);
 
   const desc = useRef<HTMLTextAreaElement>(null);
   const file = useRef<HTMLInputElement>(null);
@@ -46,7 +45,7 @@ const EventEdit = () => {
           // 변경할 속성만 대입
           item.title = title.current ? title.current.value : "";
           item.description = desc.current?.value;
-          item.eventPhotoUrl = reader.result ? reader.result.toString() : "";
+          item.photoUrl = reader.result ? reader.result.toString() : "";
 
           // reducer로 state 수정 및 목록으로 이동
           saveItem(item);
