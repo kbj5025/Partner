@@ -7,7 +7,7 @@ body {
 }
 
 a {
-  color: hotpink;
+  color: black;
 }
 
 * {
@@ -34,6 +34,12 @@ a {
   text-decoration: none !important;
   list-style: none;
   font-weight: normal;
+  color: black;
+}
+
+h6 {
+  padding: 2rem 0;
+  color: hotpink;
 }
 
 h2 {

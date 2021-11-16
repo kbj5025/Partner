@@ -9,6 +9,8 @@ export interface EventItemResponse {
   keyword: string;
   price: string;
   clinic: string;
+  fileType: string;
+  fileName: string;
 }
 
 export interface EventItemRequest {
@@ -19,6 +21,8 @@ export interface EventItemRequest {
   keyword: string;
   price: string;
   clinic: string;
+  fileType: string;
+  fileName: string;
 }
 
 // 서버하고 데이터 연동하는 api처리 목록을 별도의 객체로 작성

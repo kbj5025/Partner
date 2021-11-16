@@ -24,60 +24,62 @@ const Index = () => {
   return (
     <Layout>
       <section>
-        <div className="d-flex">
-          <Head>
-            <title>미남이시네요</title>
-          </Head>
-        </div>
         <div className="d-flex justify-content-center">
-          <h2 style={{ fontWeight: "bold" }}>🎁이벤트 관리🎁</h2>
-        </div>
-        <Sidebar />
-
-        {event.data.map((item, index) => (
-          <Card
-            key={`event-item-${index}`}
-            className="d-flex"
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              router.push(`/event/detail/${item.id}`);
-            }}
-          >
-            <Card.Body>
-              <Card.Img
-                className="me-3"
-                src={item.photoUrl}
-                alt={item.title}
-                style={{ width: "80px", height: "50px," }}
-              />
-
-              <div style={{ margin: "auto 0" }}>
-                <div className="my-3">
-                  <Card.Title
-                    style={{
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {item.title}
-                  </Card.Title>
-                  <Card.Text>{item.description}</Card.Text>
-                </div>
-              </div>
-            </Card.Body>
-          </Card>
-        ))}
-        <br></br>
-        <div className="d-flex justify-content-center">
-          <div style={{ margin: "auto 0" }}>
-            <button
-              className="btn btn-dark"
-              onClick={() => {
-                router.push("/event/register");
-              }}
-            >
-              + 이벤트 등록하기
-            </button>
+          <h2 style={{ fontWeight: "bold", width: "50%" }}>🎁이벤트 관리🎁</h2>
+          <div className="d-flex justify-content-end" style={{ width: "50%" }}>
+            <div style={{ margin: "auto 0" }}>
+              <button
+                className="btn btn-dark"
+                onClick={() => {
+                  router.push("/event/register");
+                }}
+              >
+                + 이벤트 등록하기
+              </button>
+            </div>
           </div>
+        </div>
+        <div className="d-flex">
+          <Sidebar />
+          <div className="d-flex flex-wrap">
+            {event.data.map((item, index) => (
+              <Card
+                key={`event-item-${index}`}
+                className="d-flex"
+                style={{
+                  width: "calc((100% - 3rem) / 4)",
+                  marginLeft: index % 4 === 0 ? "0" : "1rem",
+                  marginTop: index > 3 ? "1rem" : "0",
+                }}
+                onClick={() => {
+                  router.push(`/event/detail/${item.id}`);
+                }}
+              >
+                <Card.Body>
+                  <Card.Img
+                    className="me-3"
+                    src={item.photoUrl}
+                    alt={item.title}
+                    style={{ width: "80px", height: "50px," }}
+                  />
+
+                  <div style={{ margin: "auto 0" }}>
+                    <div className="my-3">
+                      <Card.Title
+                        style={{
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {item.title}
+                      </Card.Title>
+                      <Card.Text>{item.description}</Card.Text>
+                    </div>
+                  </div>
+                </Card.Body>
+              </Card>
+            ))}
+          </div>
+          <br></br>
         </div>
       </section>
     </Layout>

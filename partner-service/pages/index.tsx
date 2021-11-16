@@ -16,7 +16,7 @@ const Index = () => {
           <br></br>
 
           <div>
-            <Card style={{ width: "600px", height: "400px" }}>
+            <Card style={{ width: "700px", height: "400px" }}>
               <div className="border border dark" />
               <a>
                 <Image src="/example.png" alt="입점 신청 예제" layout="fill" />
@@ -24,18 +24,16 @@ const Index = () => {
             </Card>
             <br></br>
             <br></br>
-            <div>
-              <a>미남이시네요는...</a>
-              <br></br>
-              <a>
-                합리적 가격의 다양한 피부 시술 정보를 비교/공유할 수 있는 피부
-                시술 정보 플랫폼입니다.
-              </a>
+            <div className="d-flex justify-content-center">
+              <h6>
+                미남이시네요는... 합리적 가격의 다양한 피부 시술 정보를
+                비교/공유할 수 있는 피부 시술 정보 플랫폼입니다.
+              </h6>
             </div>
             <br></br>
             <br></br>
 
-            <Card style={{ width: "600px", height: "400px" }}>
+            <Card style={{ width: "700px", height: "400px" }}>
               <div className="border border dark" />
               <a>
                 <Image src="/main.png" alt="설명1" layout="fill" />

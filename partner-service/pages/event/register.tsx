@@ -1,7 +1,7 @@
 import Layout from "../../components/layout";
 import { Card } from "react-bootstrap";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { EventItem, addEvent } from "../../provider/modules/event";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../provider";
@@ -12,6 +12,17 @@ const Register = () => {
   const eventData = useSelector((state: RootState) => state.event.data);
   const dispatch = useDispatch<AppDispatch>();
 
+  // 추가 완료 여부(state 변경 감지)
+  const isAddCompleted = useSelector(
+    (state: RootState) => state.event.isAddCompleted
+  );
+
+  // state가 변경되면 처리되는 함수
+  useEffect(() => {
+    isAddCompleted && router.push("/event");
+  }, [isAddCompleted, router, dispatch]);
+
+  // input ref객체
   const titleInput = useRef<HTMLInputElement>(null);
   const desc = useRef<HTMLInputElement>(null);
   const fileInput = useRef<HTMLInputElement>(null);
@@ -28,11 +39,14 @@ const Register = () => {
           id: eventData.length > 0 ? eventData[0].id + 1 : 1,
           title: titleInput.current ? titleInput.current.value : "",
           photoUrl: reader.result ? reader.result.toString() : "",
+          fileType: imageFile.type,
+          fileName: imageFile.name,
           description: desc.current?.value,
           clinic: clinicInput.current ? clinicInput.current.value : "",
           price: priceInput.current ? priceInput.current.value : "",
           keyword: keywordSelect.current ? keywordSelect.current.value : "",
         };
+
         //redux
         //dispatch(addEvent(item));
 

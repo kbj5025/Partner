@@ -5,13 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../provider";
 import { addApply, ApplyItem } from "../provider/modules/apply";
 import { Card } from "react-bootstrap";
+import { requestAddApply } from "../middleware/modules/apply";
 
 const Apply = () => {
   const router = useRouter();
-
-  const id = router.query.id as string;
-
-  console.log(id);
   // 데이터 배열 가져오기
   const ApplyData = useSelector((state: RootState) => state.apply.data);
   // dispatch 함수 만들기
@@ -55,7 +52,13 @@ const Apply = () => {
         ? admissionApplicationDateInput.current.value
         : "",
     };
-    dispatch(addApply(item));
+
+    //redux
+    //dispatch(addApply(item));
+
+    // saga action
+    dispatch(requestAddApply(item));
+
     router.push(`/complete/${item.id}`);
   };
 

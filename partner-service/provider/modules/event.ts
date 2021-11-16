@@ -12,6 +12,8 @@ export interface EventItem {
   clinic: string;
   price: string;
   keyword: string;
+  fileName: string;
+  fileType: string;
 }
 
 // 백엔드 연동 고려해서 state 구조를 설계
@@ -24,18 +26,7 @@ export interface EventState {
 }
 
 const initialState: EventState = {
-  data: [
-    {
-      id: 1,
-      title: "아이웰 눈꺼풀 필러",
-      description:
-        "꺼진 눈두덩이를 채우면 더 어리고 밝아보이는 인상으로 개선 가능!",
-      photoUrl: "https://via.placeholder.com/150/54176f",
-      clinic: "아이웰",
-      price: "97만원",
-      keyword: "눈",
-    },
-  ],
+  data: [],
   isFetched: false,
 };
 
@@ -71,6 +62,11 @@ const eventSlice = createSlice({
         eventItem.title = modifyItem.title;
         eventItem.description = modifyItem.description;
         eventItem.photoUrl = modifyItem.photoUrl;
+        eventItem.clinic = modifyItem.clinic;
+        eventItem.price = modifyItem.price;
+        eventItem.keyword = modifyItem.keyword;
+        eventItem.fileName = modifyItem.fileName;
+        eventItem.fileType = modifyItem.fileType;
       }
       state.isModifyCompleted = true; // 변경되었음을 표시
     },

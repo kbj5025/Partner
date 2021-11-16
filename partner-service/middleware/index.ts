@@ -1,5 +1,6 @@
 import { fork } from "redux-saga/effects";
 import eventSaga from "./modules/event";
+import applySaga from "./modules/apply";
 
 // 최상위 Saga를 내보내기함
 // 그 하위, reviewSaga
@@ -7,4 +8,5 @@ import eventSaga from "./modules/event";
 export default function* rootSaga() {
   // 비동기로 하위 사가를 처리함
   yield fork(eventSaga);
+  yield fork(applySaga);
 }

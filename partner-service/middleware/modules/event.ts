@@ -6,12 +6,21 @@ import eventReducer, {
 } from "../../provider/modules/event";
 import { createAction, PayloadAction } from "@reduxjs/toolkit";
 import { EventItem } from "../../provider/modules/event";
-import { call, put, takeEvery, takeLatest } from "@redux-saga/core/effects";
+import {
+  call,
+  put,
+  select,
+  takeEvery,
+  takeLatest,
+} from "@redux-saga/core/effects";
 import api, {
   EventItemRequest,
   EventItemResponse,
 } from "../../pages/api/event";
+import { dataUrlToFile } from "../../lib/string";
+import fileApi from "../../pages/api/file";
 import { AxiosResponse } from "axios";
+import { RootState } from "../../provider";
 
 // saga action 생성
 
@@ -44,6 +53,22 @@ function* addData(action: PayloadAction<EventItem>) {
 
   // payload 객체
   const eventItemPayload = action.payload;
+  /* ------------ s3 업로드 처리 --------------- */
+  // 1. dataUrl -> file 변환
+  const file: File = yield call(
+    dataUrlToFile,
+    eventItemPayload.photoUrl,
+    eventItemPayload.fileName,
+    eventItemPayload.fileType
+  );
+
+  // 2.form data 객체 생성
+  const formFile = new FormData();
+  formFile.set("file", file);
+
+  // 3. multipart/form-data로 업로드
+  const fileUrl: AxiosResponse<string> = yield call(fileApi.upload, formFile);
+  /* --------------------------------------- */
 
   // rest api로 보낼 요청객체
   const eventItemRequest: EventItemRequest = {
@@ -52,11 +77,14 @@ function* addData(action: PayloadAction<EventItem>) {
     description: eventItemPayload.description
       ? eventItemPayload.description
       : "",
-    photoUrl: eventItemPayload.photoUrl,
     clinic: eventItemPayload.clinic,
     keyword: eventItemPayload.keyword,
     price: eventItemPayload.price,
+    photoUrl: fileUrl.data,
+    fileType: eventItemPayload.fileType,
+    fileName: eventItemPayload.fileName,
   };
+
   // rest api에 post로 데이터를 보냄
   const result: AxiosResponse<EventItemResponse> = yield call(
     api.add,
@@ -70,6 +98,8 @@ function* addData(action: PayloadAction<EventItem>) {
     clinic: result.data.clinic,
     price: result.data.price,
     keyword: result.data.keyword,
+    fileType: result.data.fileType,
+    fileName: result.data.fileName,
   };
   // dispatcher(액션)과 동일함
   yield put(addEvent(eventItem));
@@ -91,6 +121,8 @@ function* modifyData(action: PayloadAction<EventItem>) {
     clinic: eventItemPayload.clinic,
     keyword: eventItemPayload.keyword,
     price: eventItemPayload.price,
+    fileType: eventItemPayload.fileType,
+    fileName: eventItemPayload.fileName,
   };
   const result: AxiosResponse<EventItemResponse> = yield call(
     api.modify,
@@ -105,6 +137,8 @@ function* modifyData(action: PayloadAction<EventItem>) {
     clinic: result.data.clinic,
     price: result.data.price,
     keyword: result.data.keyword,
+    fileType: result.data.fileType,
+    fileName: result.data.fileName,
   };
   // state 변경
   yield put(modifyEvent(eventItem));
@@ -126,6 +160,8 @@ function* fetchData() {
         clinic: item.clinic,
         price: item.price,
         keyword: item.keyword,
+        fileType: item.fileType,
+        fileName: item.fileName,
       } as EventItem)
   );
   // state 초기화 reducer 실행
@@ -144,6 +180,18 @@ function* removeDataNext(action: PayloadAction<number>) {
     // state 변경(1건삭제)
     yield put(removeEvent(id));
   }
+
+  /* ----- s3 파일 삭제 로직 ----- */
+  // redux state에서 id로 object key 가져오기
+  const eventItem: EventItem = yield select((state: RootState) =>
+    state.event.data.find((item) => item.id === id)
+  );
+  const urlArr = eventItem.photoUrl.split("/");
+  const objectKey = urlArr[urlArr.length - 1];
+
+  // file api 호출해서 s3에 파일 삭제
+  yield call(fileApi.remove, objectKey);
+  /* ----- s3 파일 삭제 로직 끝 ----- */
 }
 
 // saga action 감지

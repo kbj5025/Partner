@@ -21,6 +21,9 @@ const EventEdit = () => {
   const desc = useRef<HTMLTextAreaElement>(null);
   const file = useRef<HTMLInputElement>(null);
   const title = useRef<HTMLInputElement>(null);
+  const keyword = useRef<HTMLInputElement>(null);
+  const price = useRef<HTMLInputElement>(null);
+  const clinic = useRef<HTMLInputElement>(null);
 
   const changeFile = () => {
     if (file.current?.files?.length) {
@@ -46,7 +49,11 @@ const EventEdit = () => {
           item.title = title.current ? title.current.value : "";
           item.description = desc.current?.value;
           item.photoUrl = reader.result ? reader.result.toString() : "";
-
+          item.keyword = keyword.current ? keyword.current.value : "";
+          item.clinic = clinic.current ? clinic.current.value : "";
+          item.price = price.current ? price.current.value : "";
+          item.fileType = imageFile.type;
+          item.fileName = imageFile.name;
           // reducer로 state 수정 및 목록으로 이동
           saveItem(item);
         }
@@ -59,6 +66,10 @@ const EventEdit = () => {
         // 변경할 속성만 대입
         item.title = title.current ? title.current.value : "";
         item.description = desc.current?.value;
+
+        item.keyword = keyword.current ? keyword.current.value : "";
+        item.clinic = clinic.current ? clinic.current.value : "";
+        item.price = price.current ? price.current.value : "";
 
         // reducer로 state 수정 및 목록으로 이동
         saveItem(item);
@@ -117,6 +128,7 @@ const EventEdit = () => {
                     type="text"
                     className="form-control"
                     defaultValue={eventItem?.clinic}
+                    ref={clinic}
                   />
                 </td>
               </tr>
@@ -127,6 +139,7 @@ const EventEdit = () => {
                     type="text"
                     className="form-control"
                     defaultValue={eventItem?.keyword}
+                    ref={keyword}
                   />
                 </td>
               </tr>
@@ -137,6 +150,7 @@ const EventEdit = () => {
                     type="text"
                     className="form-control"
                     defaultValue={eventItem?.price}
+                    ref={price}
                   />
                 </td>
               </tr>
