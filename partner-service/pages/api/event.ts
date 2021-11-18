@@ -11,6 +11,7 @@ export interface EventItemResponse {
   clinic: string;
   fileType: string;
   fileName: string;
+  createdTime: number;
 }
 
 export interface EventItemRequest {
@@ -23,6 +24,7 @@ export interface EventItemRequest {
   clinic: string;
   fileType: string;
   fileName: string;
+  createdTime: number;
 }
 
 // 서버하고 데이터 연동하는 api처리 목록을 별도의 객체로 작성

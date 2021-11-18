@@ -9,7 +9,7 @@ const Complete = () => {
   const id = router.query.id as string;
 
   const apply = useSelector((state: RootState) =>
-    state.apply.data.find((item) => item.id === +id)
+    state.apply.data.find((item) => item.id)
   );
 
   return (

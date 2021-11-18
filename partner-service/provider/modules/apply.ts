@@ -44,10 +44,13 @@ const applySlice = createSlice({
       // 데이터를 받아옴으로 값을 남김
       state.isFetched = true;
     },
+    initialCompleted: (state) => {
+      delete state.isAddCompleted;
+    },
   },
 });
 
 // action creator 내보내기: action creator는 action객체를 반환하는 함수
-export const { addApply, initialApply } = applySlice.actions;
+export const { addApply, initialApply, initialCompleted } = applySlice.actions;
 
 export default applySlice.reducer;

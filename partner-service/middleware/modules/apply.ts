@@ -1,6 +1,7 @@
 import applyReducer, {
   addApply,
   initialApply,
+  initialCompleted,
 } from "../../provider/modules/apply";
 import { createAction, PayloadAction } from "@reduxjs/toolkit";
 import { ApplyItem } from "../../provider/modules/apply";
@@ -65,6 +66,8 @@ function* addData(action: PayloadAction<ApplyItem>) {
   };
   // dispatcher(액션)과 동일함
   yield put(addApply(applyItem));
+
+  yield put(initialCompleted());
 }
 
 // 서버에서 GET으로 데이터를 가져오고, redux
@@ -90,6 +93,8 @@ function* fetchData() {
   );
   // state 초기화 reducer 실행
   yield put(initialApply(applys));
+
+  yield put(initialCompleted());
 }
 
 // saga action 감지

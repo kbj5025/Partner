@@ -1,6 +1,21 @@
 import Layout from "../../components/layout";
 import Sidebar from "../../components/event/sidebar";
-export default function Reservemain() {
+import axios from "axios";
+
+interface ReserveData {
+  id: number;
+  rezName: string;
+  rezPhone: string;
+  seeDate: string;
+  seeTime: string;
+  eventId: string;
+}
+
+interface IndexProp {
+  reserves: ReserveData[];
+}
+
+const Reservemain = ({ reserves }: IndexProp) => {
   return (
     <Layout>
       <section>
@@ -26,23 +41,17 @@ export default function Reservemain() {
                   <th scope="col">예약시간</th>
                 </tr>
               </thead>
-              <tbody>
-                <td scope="col" style={{ margin: "0 auto" }}>
-                  <tr> 0</tr>
-                </td>
-                <td scope="col" style={{ margin: "0 auto" }}>
-                  <tr>고봉준</tr>
-                </td>
-                <td scope="col" style={{ margin: "0 auto" }}>
-                  <tr>01073664355</tr>
-                </td>
-                <td scope="col" style={{ margin: "0 auto" }}>
-                  <tr>2021-12-15</tr>
-                </td>
-                <td scope="col" style={{ margin: "0 auto" }}>
-                  <tr>14:00~15:00</tr>
-                </td>
-              </tbody>
+              {reserves.map((reserves: any, index: any) => (
+                <tbody key={index}>
+                  <tr>
+                    <td>{reserves.id}</td>
+                    <td>{reserves.rezName}</td>
+                    <td>{reserves.rezPhone}</td>
+                    <td>{reserves.seeDate}</td>
+                    <td>{reserves.seeTime}</td>
+                  </tr>
+                </tbody>
+              ))}
             </table>
           </div>
         </div>
@@ -50,4 +59,12 @@ export default function Reservemain() {
       </section>
     </Layout>
   );
+};
+export async function getServerSideProps() {
+  const res = await axios.get<ReserveData[]>(`http://localhost:8080/reserves`);
+  const reserves = res.data;
+
+  return { props: { reserves } };
 }
+
+export default Reservemain;

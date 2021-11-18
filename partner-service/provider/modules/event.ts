@@ -14,6 +14,7 @@ export interface EventItem {
   keyword: string;
   fileName: string;
   fileType: string;
+  createdTime: number;
 }
 
 // 백엔드 연동 고려해서 state 구조를 설계
@@ -78,11 +79,19 @@ const eventSlice = createSlice({
       // 데이터를 받아옴으로 값을 남김
       state.isFetched = true;
     },
+    initialCompleted: (state) => {
+      delete state.isAddCompleted;
+    },
   },
 });
 
 // action creator 내보내기: action creator는 action객체를 반환하는 함수
-export const { addEvent, removeEvent, modifyEvent, initialEvent } =
-  eventSlice.actions;
+export const {
+  addEvent,
+  removeEvent,
+  modifyEvent,
+  initialEvent,
+  initialCompleted,
+} = eventSlice.actions;
 
 export default eventSlice.reducer;

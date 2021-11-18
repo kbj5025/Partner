@@ -6,10 +6,6 @@ export default function Sidebar() {
     <div className="d-flex">
       <nav className={styles.nav}>
         <input className={styles.input} placeholder="Search..." />
-        <Link href="/">
-          <a>파트너 정보</a>
-        </Link>
-        <br></br>
         <Link href="/event">
           <a>이벤트 관리</a>
         </Link>

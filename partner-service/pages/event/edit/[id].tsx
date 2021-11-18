@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../provider";
 import { modifyEvent, EventItem } from "../../../provider/modules/event";
+import { requestModifyEvent } from "../../../middleware/modules/event";
 
 const EventEdit = () => {
   const router = useRouter();
@@ -77,7 +78,7 @@ const EventEdit = () => {
     }
   };
   const saveItem = (item: EventItem) => {
-    dispatch(modifyEvent(item));
+    dispatch(requestModifyEvent(item));
     router.push("/event");
   };
 

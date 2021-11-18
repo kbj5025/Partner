@@ -3,6 +3,7 @@ import eventReducer, {
   removeEvent,
   modifyEvent,
   initialEvent,
+  initialCompleted,
 } from "../../provider/modules/event";
 import { createAction, PayloadAction } from "@reduxjs/toolkit";
 import { EventItem } from "../../provider/modules/event";
@@ -46,13 +47,40 @@ export const requestFetchEvents = createAction(
 
 /* ========= saga action을 처리하는 부분 =============== */
 
+// 서버에서 GET으로 데이터를 가져오고, redux
+function* fetchData() {
+  // 백엔드에서 데이터 받아오기
+  const result: AxiosResponse<EventItemResponse[]> = yield call(api.fetch);
+
+  // 응답데이터배열을 액션페이로드 배열로 변환
+  const events = result.data.map(
+    (item) =>
+      ({
+        id: item.id,
+        title: item.title,
+        description: item.description,
+        photoUrl: item.photoUrl,
+        clinic: item.clinic,
+        price: item.price,
+        keyword: item.keyword,
+        fileType: item.fileType,
+        fileName: item.fileName,
+        createdTime: item.createdTime,
+      } as EventItem)
+  );
+  // state 초기화 reducer 실행
+  yield put(initialEvent(events));
+}
+
 // 서버에 post로 데이터를 보내 추가하고, redux state를 변경
-function* addData(action: PayloadAction<EventItem>) {
+function* addDataNext(action: PayloadAction<EventItem>) {
   yield console.log("--addData--");
   yield console.log(action);
 
   // payload 객체
+
   const eventItemPayload = action.payload;
+
   /* ------------ s3 업로드 처리 --------------- */
   // 1. dataUrl -> file 변환
   const file: File = yield call(
@@ -83,13 +111,15 @@ function* addData(action: PayloadAction<EventItem>) {
     photoUrl: fileUrl.data,
     fileType: eventItemPayload.fileType,
     fileName: eventItemPayload.fileName,
+    createdTime: eventItemPayload.createdTime,
   };
 
-  // rest api에 post로 데이터를 보냄
+  // rest api에 post로 데이터 보냄
   const result: AxiosResponse<EventItemResponse> = yield call(
     api.add,
     eventItemRequest
   );
+  // redux state를 변경함
   const eventItem: EventItem = {
     id: result.data.id,
     title: result.data.title,
@@ -100,13 +130,48 @@ function* addData(action: PayloadAction<EventItem>) {
     keyword: result.data.keyword,
     fileType: result.data.fileType,
     fileName: result.data.fileName,
+    createdTime: result.data.createdTime,
   };
   // dispatcher(액션)과 동일함
   yield put(addEvent(eventItem));
+
+  // completed 속성 삭제
+  yield put(initialCompleted());
+}
+
+// 삭제 처리
+function* removeDataNext(action: PayloadAction<number>) {
+  yield console.log("--removeDataNext--");
+  // id값
+  const id = action.payload;
+  console.log(id);
+
+  /* ----- s3 파일 삭제 로직 ----- */
+  // redux state에서 id로 object key 가져오기
+  const eventItem: EventItem = yield select((state: RootState) =>
+    state.event.data.find((item) => item.id === id)
+  );
+
+  // file api 호출해서 s3에 파일 삭제
+  if (eventItem.photoUrl !== "") {
+    const urlArr = eventItem.photoUrl.split("/");
+    const objectKey = urlArr[urlArr.length - 1];
+    yield call(fileApi.remove, objectKey);
+  }
+  /* ----- s3 파일 삭제 로직 끝 ----- */
+
+  // rest api 연동
+  const result: AxiosResponse<boolean> = yield call(api.remove, id);
+  // 반환 값이 true이면
+  if (result.data) {
+    // state 변경(1건삭제)
+    yield put(removeEvent(id));
+  }
+  yield put(initialCompleted());
 }
 
 // 수정처리
-function* modifyData(action: PayloadAction<EventItem>) {
+function* modifyDataNext(action: PayloadAction<EventItem>) {
   yield console.log("--modifyData--");
   // action의 payload로 넘어온 객체
   const eventItemPayload = action.payload;
@@ -123,6 +188,7 @@ function* modifyData(action: PayloadAction<EventItem>) {
     price: eventItemPayload.price,
     fileType: eventItemPayload.fileType,
     fileName: eventItemPayload.fileName,
+    createdTime: eventItemPayload.createdTime,
   };
   const result: AxiosResponse<EventItemResponse> = yield call(
     api.modify,
@@ -139,72 +205,24 @@ function* modifyData(action: PayloadAction<EventItem>) {
     keyword: result.data.keyword,
     fileType: result.data.fileType,
     fileName: result.data.fileName,
+    createdTime: result.data.createdTime,
   };
   // state 변경
   yield put(modifyEvent(eventItem));
-}
 
-// 서버에서 GET으로 데이터를 가져오고, redux
-function* fetchData() {
-  // 백엔드에서 데이터 받아오기
-  const result: AxiosResponse<EventItemResponse[]> = yield call(api.fetch);
-
-  // 응답데이터배열을 액션페이로드 배열로 변환
-  const events = result.data.map(
-    (item) =>
-      ({
-        id: item.id,
-        title: item.title,
-        description: item.description,
-        photoUrl: item.photoUrl,
-        clinic: item.clinic,
-        price: item.price,
-        keyword: item.keyword,
-        fileType: item.fileType,
-        fileName: item.fileName,
-      } as EventItem)
-  );
-  // state 초기화 reducer 실행
-  yield put(initialEvent(events));
-}
-
-// 삭제 처리
-function* removeDataNext(action: PayloadAction<number>) {
-  yield console.log("--removeDataNext--");
-  // id값
-  const id = action.payload;
-  // rest api 연동
-  const result: AxiosResponse<boolean> = yield call(api.remove, id);
-  // 반환 값이 true이면
-  if (result.data) {
-    // state 변경(1건삭제)
-    yield put(removeEvent(id));
-  }
-
-  /* ----- s3 파일 삭제 로직 ----- */
-  // redux state에서 id로 object key 가져오기
-  const eventItem: EventItem = yield select((state: RootState) =>
-    state.event.data.find((item) => item.id === id)
-  );
-  const urlArr = eventItem.photoUrl.split("/");
-  const objectKey = urlArr[urlArr.length - 1];
-
-  // file api 호출해서 s3에 파일 삭제
-  yield call(fileApi.remove, objectKey);
-  /* ----- s3 파일 삭제 로직 끝 ----- */
+  yield put(initialCompleted());
 }
 
 // saga action 감지
 // event redux state 처리와 관련된 saga action들을 take할 saga생성
 export default function* eventSaga() {
-  //
-  // 동일한 타입의 액션을 모두 처리함
-  yield takeEvery(requestAddEvent, addData);
-  // 수정처리
-  yield takeEvery(requestModifyEvent, modifyData);
-  // 삭제처리
-  yield takeEvery(requestRemoveEvent, removeDataNext);
-
   // 동일한 타입의 액션중에서 가장 마지막 액션만 처리
   yield takeLatest(requestFetchEvents, fetchData);
+
+  // 동일한 타입의 액션을 모두 처리함
+  yield takeEvery(requestAddEvent, addDataNext);
+  // 수정처리
+  yield takeEvery(requestModifyEvent, modifyDataNext);
+  // 삭제처리
+  yield takeEvery(requestRemoveEvent, removeDataNext);
 }

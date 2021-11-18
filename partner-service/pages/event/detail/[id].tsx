@@ -2,7 +2,7 @@ import router, { useRouter } from "next/router";
 import Layout from "../../../components/layout";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../provider";
-import { removeEvent } from "../../../provider/modules/event";
+import { requestRemoveEvent } from "../../../middleware/modules/event";
 
 const EventDetail = () => {
   const router = useRouter();
@@ -12,6 +12,8 @@ const EventDetail = () => {
   let eventItem = useSelector((state: RootState) =>
     state.event.data.find((item) => item.id === +id)
   );
+
+  console.log(eventItem);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -76,7 +78,7 @@ const EventDetail = () => {
             <button
               className="btnSize btn btn-primary me-1"
               onClick={() => {
-                router.push(`/event/edit/${id}`);
+                router.push(`/event/edit/${eventItem ? eventItem?.id : +id}`);
               }}
             >
               수정
@@ -84,7 +86,7 @@ const EventDetail = () => {
             <button
               className="btnSize btn btn-danger"
               onClick={() => {
-                dispatch(removeEvent(+id));
+                dispatch(requestRemoveEvent(+id));
                 router.push("/event");
               }}
             >

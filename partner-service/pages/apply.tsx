@@ -1,6 +1,6 @@
 import Layout from "../components/layout";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../provider";
 import { addApply, ApplyItem } from "../provider/modules/apply";

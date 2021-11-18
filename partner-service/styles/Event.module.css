@@ -1,0 +1,28 @@
+.events {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 1rem;
+}
+
+.events div {
+  display: grid;
+  flex-direction: row;
+}
+
+.title p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 700px) {
+  .events {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .events {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
