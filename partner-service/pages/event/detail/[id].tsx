@@ -45,6 +45,10 @@ const EventDetail = () => {
               <td>{eventItem?.title}</td>
             </tr>
             <tr>
+              <th>이벤트Id</th>
+              <td>{eventItem?.id}</td>
+            </tr>
+            <tr>
               <th>병원명</th>
               <td>{eventItem?.clinic}</td>
             </tr>

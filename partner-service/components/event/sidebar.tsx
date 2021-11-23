@@ -6,6 +6,10 @@ export default function Sidebar() {
     <div className="d-flex">
       <nav className={styles.nav}>
         <input className={styles.input} placeholder="Search..." />
+        <Link href="/applyprofile">
+          <a>입점 프로필</a>
+        </Link>
+        <br></br>
         <Link href="/event">
           <a>이벤트 관리</a>
         </Link>
@@ -14,11 +18,9 @@ export default function Sidebar() {
           <a>상담 예약 관리</a>
         </Link>
         <br></br>
-
-        <Link href="/">
+        <Link href="/eventchart">
           <a>현황</a>
         </Link>
-        <br></br>
       </nav>
     </div>
   );

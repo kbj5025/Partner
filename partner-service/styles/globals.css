@@ -55,3 +55,31 @@ h2 {
   background: #515157;
   line-height: 44px;
 }
+
+/* 테이블 스타일 */
+table {
+  border-collapse: separate !important;
+  border-spacing: 0 5px !important;
+  border-radius: 5px;
+}
+
+table th {
+  font-weight: bold;
+  text-align: center;
+  width: 150px;
+  vertical-align: middle;
+  height: 30px !important;
+  background: rgb(50, 100, 100) !important;
+  color: #fff;
+  border: none;
+  border-radius: 5px 0 0 5px;
+}
+
+table td {
+  vertical-align: middle;
+  background: #fff !important;
+  border: 1px solid #d9dfeb;
+  border-radius: 0 5px 5px 0;
+  text-align: center;
+  word-break: break-all;
+}

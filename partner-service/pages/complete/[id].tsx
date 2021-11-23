@@ -5,7 +5,6 @@ import { RootState } from "../../provider";
 
 const Complete = () => {
   const router = useRouter();
-
   const id = router.query.id as string;
 
   const apply = useSelector((state: RootState) =>
@@ -14,10 +13,10 @@ const Complete = () => {
 
   return (
     <Layout>
-      <div className="d-flex justify-content-center">
+      <div>
         <h2 className="title text-center">입점 신청이 완료 되었습니다 !!</h2>
       </div>
-      <div style={{ width: "50%" }}>
+      <div style={{ width: "700px" }} className=" mx-auto">
         <table className="table">
           <tbody>
             <tr>

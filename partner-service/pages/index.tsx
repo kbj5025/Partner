@@ -16,10 +16,16 @@ const Index = () => {
           <br></br>
 
           <div>
-            <Card style={{ width: "700px", height: "400px" }}>
+            <Card style={{ textAlign: "center" }}>
               <div className="border border dark" />
               <a>
-                <Image src="/example.png" alt="입점 신청 예제" layout="fill" />
+                <Image
+                  className="mx-auto"
+                  src="/example.png"
+                  alt="입점 신청 예제"
+                  width={600}
+                  height={600}
+                />
               </a>
             </Card>
             <br></br>

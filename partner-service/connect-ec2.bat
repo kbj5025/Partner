@@ -1,0 +1,1 @@
+ssh -i "C:front.pem" ubuntu@ec2-54-180-124-220.ap-northeast-2.compute.amazonaws.com

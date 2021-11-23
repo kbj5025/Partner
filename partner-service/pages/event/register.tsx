@@ -45,6 +45,7 @@ const Register = () => {
           clinic: clinicInput.current ? clinicInput.current.value : "",
           price: priceInput.current ? priceInput.current.value : "",
           keyword: keywordSelect.current ? keywordSelect.current.value : "",
+          createdTime: new Date().getTime(),
         };
 
         //redux
