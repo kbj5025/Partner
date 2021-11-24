@@ -2,7 +2,7 @@ import Layout from "../../components/layout";
 import { Card } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useRef, useEffect } from "react";
-import { EventItem, addEvent } from "../../provider/modules/event";
+import { EventItem } from "../../provider/modules/event";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../provider";
 import { requestAddEvent } from "../../middleware/modules/event";
@@ -39,13 +39,13 @@ const Register = () => {
           id: eventData.length > 0 ? eventData[0].id + 1 : 1,
           title: titleInput.current ? titleInput.current.value : "",
           photoUrl: reader.result ? reader.result.toString() : "",
+          createdTime: new Date().getTime(),
           fileType: imageFile.type,
           fileName: imageFile.name,
           description: desc.current?.value,
           clinic: clinicInput.current ? clinicInput.current.value : "",
           price: priceInput.current ? priceInput.current.value : "",
           keyword: keywordSelect.current ? keywordSelect.current.value : "",
-          createdTime: new Date().getTime(),
         };
 
         //redux
