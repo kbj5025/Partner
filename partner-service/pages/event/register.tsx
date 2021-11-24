@@ -37,15 +37,15 @@ const Register = () => {
       reader.onload = () => {
         const item: EventItem = {
           id: eventData.length > 0 ? eventData[0].id + 1 : 1,
-          title: titleInput.current ? titleInput.current.value : "",
-          photoUrl: reader.result ? reader.result.toString() : "",
-          createdTime: new Date().getTime(),
           fileType: imageFile.type,
           fileName: imageFile.name,
           description: desc.current?.value,
+          title: titleInput.current ? titleInput.current.value : "",
+          photoUrl: reader.result ? reader.result.toString() : "",
           clinic: clinicInput.current ? clinicInput.current.value : "",
           price: priceInput.current ? priceInput.current.value : "",
           keyword: keywordSelect.current ? keywordSelect.current.value : "",
+          createdTime: new Date().getTime(),
         };
 
         //redux
