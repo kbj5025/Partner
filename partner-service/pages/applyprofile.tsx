@@ -39,31 +39,31 @@ const ApplyProfile = ({ applys }: IndexProp) => {
                   <td>{applys.clinicSector}</td>
                 </tr>
                 <tr>
-                  <th>사업자등록번호</th>
+                  <th>병원위치</th>
                   <td>{applys.clinicLocate}</td>
                 </tr>
                 <tr>
-                  <th>예약시간</th>
+                  <th>사업자등록번호</th>
                   <td>{applys.registrationNumber}</td>
                 </tr>
                 <tr>
-                  <th>예약시간</th>
+                  <th>설립일자</th>
                   <td>{applys.dateOfEstablishment}</td>
                 </tr>
                 <tr>
-                  <th>예약시간</th>
+                  <th>연락처</th>
                   <td>{applys.phone}</td>
                 </tr>
                 <tr>
-                  <th>예약시간</th>
+                  <th>Email</th>
                   <td>{applys.email}</td>
                 </tr>
                 <tr>
-                  <th>예약시간</th>
+                  <th>신청자명</th>
                   <td>{applys.applicantName}</td>
                 </tr>
                 <tr>
-                  <th>예약시간</th>
+                  <th>입점신청일</th>
                   <td>{applys.admissionApplicationDate}</td>
                 </tr>
               </tbody>
