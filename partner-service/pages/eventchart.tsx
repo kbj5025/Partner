@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Layout from "../components/layout";
 import AmountsByDates from "../components/chart/AmountByDates";
 import Sidebar from "../components/event/sidebar";
-import axios from "axios";
 
 const EventChart = () => {
   const [data, setData] = useState<{

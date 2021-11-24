@@ -1,10 +1,6 @@
 import Layout from "../../components/layout";
 import Sidebar from "../../components/event/sidebar";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { RootState } from "../../provider";
-import event from "../../provider/modules/event";
-import router, { useRouter } from "next/router";
 
 interface ReserveData {
   id: number;

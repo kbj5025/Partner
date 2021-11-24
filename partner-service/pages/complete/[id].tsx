@@ -5,7 +5,6 @@ import { RootState } from "../../provider";
 
 const Complete = () => {
   const router = useRouter();
-  const id = router.query.id as string;
 
   const apply = useSelector((state: RootState) =>
     state.apply.data.find((item) => item.id)

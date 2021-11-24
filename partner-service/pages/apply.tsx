@@ -1,9 +1,9 @@
 import Layout from "../components/layout";
 import { useRouter } from "next/router";
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../provider";
-import { addApply, ApplyItem } from "../provider/modules/apply";
+import { ApplyItem } from "../provider/modules/apply";
 import { Card } from "react-bootstrap";
 import { requestAddApply } from "../middleware/modules/apply";
 
