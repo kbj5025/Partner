@@ -1,4 +1,4 @@
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import Layout from "../../../components/layout";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../provider";

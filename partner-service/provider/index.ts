@@ -7,7 +7,7 @@ import createSagaMiddleware from "@redux-saga/core";
 
 // saga middleware 생성
 const sagaMiddleware = createSagaMiddleware();
-
+//.
 // global state(전역 상태) 저장소 만듦
 export const store = configureStore({
   reducer: {
