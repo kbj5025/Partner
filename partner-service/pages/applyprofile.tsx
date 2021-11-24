@@ -76,7 +76,7 @@ const ApplyProfile = ({ applys }: IndexProp) => {
 };
 export async function getServerSideProps() {
   const res = await axios.get<ApplyData[]>(
-    `http://ec2-54-180-124-220.ap-northeast-2.compute.amazonaws.com/applys`
+    `http://ec2-3-36-125-183.ap-northeast-2.compute.amazonaws.com:8080/applys`
   );
   const applys = res.data;
 

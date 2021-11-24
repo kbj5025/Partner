@@ -1,6 +1,10 @@
 import Layout from "../../components/layout";
 import Sidebar from "../../components/event/sidebar";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { RootState } from "../../provider";
+import event from "../../provider/modules/event";
+import router, { useRouter } from "next/router";
 
 interface ReserveData {
   id: number;
@@ -60,9 +64,7 @@ const Reservemain = ({ reserves }: IndexProp) => {
   );
 };
 export async function getServerSideProps() {
-  const res = await axios.get<ReserveData[]>(
-    `http://ec2-54-180-124-220.ap-northeast-2.compute.amazonaws.com/reserves`
-  );
+  const res = await axios.get<ReserveData[]>(`http://localhost:8080/reserves`);
   const reserves = res.data;
 
   return { props: { reserves } };
