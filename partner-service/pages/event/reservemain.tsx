@@ -64,7 +64,9 @@ const Reservemain = ({ reserves }: IndexProp) => {
   );
 };
 export async function getServerSideProps() {
-  const res = await axios.get<ReserveData[]>(`http://localhost:8080/reserves`);
+  const res = await axios.get<ReserveData[]>(
+    `http://3.36.125.183:8080/reserves`
+  );
   const reserves = res.data;
 
   return { props: { reserves } };
